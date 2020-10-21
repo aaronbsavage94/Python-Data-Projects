@@ -72,5 +72,4 @@ def upload():
 
 #Main method
 if __name__ == '__main__':
-    app.jinja_env.cache = {}
     app.run(debug=True)
