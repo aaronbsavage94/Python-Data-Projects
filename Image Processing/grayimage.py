@@ -31,7 +31,7 @@ if not os.path.exists('./instance/uploads'):
 #Render main page
 @app.route("/")
 def home():
-    return render_template('app.html')
+    return render_template('home.html')
 
 #Upload method
 @app.route('/upload', methods=['GET', 'POST'])
@@ -68,7 +68,7 @@ def upload():
 
     #Return the exception and append the exception details to the HTML
     except Exception as e:
-        return render_template('app.html', results=str(e))
+        return render_template('home.html', results=str(e))
 
 #Main method
 if __name__ == '__main__':
