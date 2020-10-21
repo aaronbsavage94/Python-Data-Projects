@@ -31,23 +31,26 @@ def home():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    uploaded_file = request.files['file']
-    filename = secure_filename(uploaded_file.filename)
-    if filename != '':
-        file_ext = os.path.splitext(filename)[1]
-        if file_ext not in app.config['UPLOAD_EXTENSIONS'] or \
-                file_ext != validate_image(uploaded_file.stream):
-            abort(400)
-        uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+    try:
+        uploaded_file = request.files['file']
+        filename = secure_filename(uploaded_file.filename)
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config['UPLOAD_EXTENSIONS'] or file_ext != validate_image(uploaded_file.stream):
+                abort(400)
+            uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
 
-    filestring = "./uploads/" + filename
-    filename = os.path.join(filestring)
-    original = io.imread(filename)
-    grayscale = rgb2gray(original)
+        filestring = "./uploads/" + filename
+        filename = os.path.join(filestring)
+        original = io.imread(filename)
+        grayscale = rgb2gray(original)
 
-    io.imsave('result.jpg', grayscale)
+        io.imsave('result.jpg', grayscale)
 
-    return send_file('./result.jpg', attachment_filename='result.jpg')
+        return send_file('./result.jpg', attachment_filename='result.jpg')
+        
+    except Exception as e:
+        return render_template('app.html', results=str(e))
 
 #Main method
 if __name__ == '__main__':
